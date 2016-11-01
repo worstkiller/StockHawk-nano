@@ -1,0 +1,28 @@
+<resources>
+  <string name="app_name">Stock Hawk</string>
+
+  <string name="action_example">Example action</string>
+
+  <string name="action_settings">Settings</string>
+  <string name="action_change_units">Change Units</string>
+  <string name="symbol_search">Symbol Search</string>
+  <string name="content_test">Search for a Stock Symbol</string>
+  <string name="input_hint">FB</string>
+  <string name="input_prefill"></string>
+  <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+  <string name="history_line_head">Stocks Data For Current Year</string>
+  <string name="history_line_min">"Min :"</string>
+  <string name="history_line_max">"Max :"</string>
+
+  <string name="screen_Reader_graph">Stocks Graph</string>
+  <string name="screen_Reader_fab">Stocks Search or Add Button</string>
+  <string name="screen_Reader_stock">Stocks Name</string>
+  <string name="screen_Reader_price">Stocks Price</string>
+  <string name="screen_Reader_change">Stocks Change</string>
+  <string name="screen_Reader_min">Stocks Min</string>
+  <string name="screen_Reader_max">Stocks Max</string>
+  <string name="screen_Reader_error">Something Unexpected Error Occurred</string>
+  <string name="screen_Reader_error_internet">Internet connection not found</string>
+  <string name="error_no_internet">Internet may be not working, showing local data instead</string>
+
+</resources>

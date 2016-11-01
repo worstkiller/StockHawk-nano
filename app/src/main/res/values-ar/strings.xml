@@ -1,0 +1,28 @@
+<resources>
+  <string name="app_name">الأسهم هوك</string>
+
+  <string name="action_example">العمل سبيل المثال</string>
+
+  <string name="action_settings">إعدادات</string>
+  <string name="action_change_units">وحدات التغيير</string>
+  <string name="symbol_search">رمز البحث</string>
+  <string name="content_test">بحث عن الأوراق المالية رمز</string>
+  <string name="input_hint">FB</string>
+  <string name="input_prefill"></string>
+  <string name="network_toast">اه اوه! هذا التطبيق يتطلب اتصال بالإنترنت</string>
+  <string name="history_line_head">الأسهم البيانات للعام الحالي</string>
+  <string name="history_line_min">"مين"</string>
+  <string name="history_line_max">"ماكس"</string>
+
+  <string name="screen_Reader_graph">الأسهم الرسم البياني</string>
+  <string name="screen_Reader_fab">الأسهم البحث أو إضافة زر</string>
+  <string name="screen_Reader_stock">اسم أسهم</string>
+  <string name="screen_Reader_price">الأسهم الأسعار</string>
+  <string name="screen_Reader_change">الأسهم تغيير</string>
+  <string name="screen_Reader_min">الأسهم مين</string>
+  <string name="screen_Reader_max">الأسهم ماكس</string>
+  <string name="screen_Reader_error">حدث شيء خطأ غير متوقع</string>
+  <string name="screen_Reader_error_internet">الاتصال بشبكة الانترنت لم يتم العثور على</string>
+  <string name="error_no_internet">الانترنت قد لا تعمل، تظهر البيانات المحلية بدلا</string>
+
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llWidget"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dip"
+    android:background="@color/material_white" >
+
+    <TextView
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:id="@+id/widgetStock"
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_margin="4dip"
+        android:text="Stock Name " >
+    </TextView>
+
+
+    <TextView
+        android:textColor="@color/material_blue_500"
+        android:layout_weight="1"
+        android:id="@+id/widgetChange"
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_margin="4dip"
+        android:text="Stock Name " >
+    </TextView>
+
+</LinearLayout>

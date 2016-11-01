@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/llHistoryData"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginRight="8dp"
+        android:textStyle="bold"
+        android:id="@+id/tvHistorySymbol"
+        android:textSize="18dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:text="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:text="@string/history_line_head"
+        android:textColor="@color/material_white_100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginRight="8dp"
+            android:textSize="18dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:text="@string/history_line_min"
+            android:textColor="@color/material_white_100"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:nextFocusDown="@string/screen_Reader_max"
+            android:contentDescription="@string/screen_Reader_min"
+            android:layout_marginRight="8dp"
+            android:id="@+id/tvHistorySymbolMin"
+            android:textSize="18dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:text="@string/app_name"
+            android:textColor="@color/material_red_700"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginRight="8dp"
+            android:textSize="18dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:text="@string/history_line_max"
+            android:textColor="@color/material_white_100"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+ <TextView
+            android:contentDescription="@string/screen_Reader_max"
+            android:layout_marginRight="8dp"
+            android:id="@+id/tvHistorySymbolMax"
+            android:textSize="18dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:text="@string/app_name"
+            android:textColor="@color/material_green_700"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:contentDescription="@string/screen_Reader_graph"
+        android:background="@color/material_white_100"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:drawableTop="@drawable/cloud_error"
+            android:contentDescription="@string/screen_Reader_error"
+            android:id="@+id/tvHistoryError"
+            android:layout_gravity="center"
+            android:text="@string/screen_Reader_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:id="@+id/pbHistoryLoading"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+</RelativeLayout>
