@@ -7,7 +7,7 @@
   <string name="action_change_units">Change Units</string>
   <string name="symbol_search">Symbol Search</string>
   <string name="content_test">Search for a Stock Symbol</string>
-  <string name="input_hint">FB</string>
+  <string name="input_hint" translatable="false">FB</string>
   <string name="input_prefill"></string>
   <string name="network_toast">Uh-oh! This app requires an internet connection</string>
   <string name="history_line_head">Stocks Data For Current Year</string>
@@ -24,5 +24,11 @@
   <string name="screen_Reader_error">Something Unexpected Error Occurred</string>
   <string name="screen_Reader_error_internet">Internet connection not found</string>
   <string name="error_no_internet">Internet may be not working, showing local data instead</string>
+  <string name="empty_view_text">Stocks are loading</string>
+  <string name="fav_stock">Your Favourite Stocks</string>
+  <string name="stocks" translatable="false">"Stocks"</string>
+  <string name="stocks_tag" translatable="false">tag</string>
+  <string name="stocks_toast">This stock is already saved!</string>
+  <string name="data_extra" translatable="false">"finance_charts_json_callback( "</string>
 
 </resources>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="40dp"
-    android:minHeight="40dp"
-    android:updatePeriodMillis="86400000"
-    android:previewImage="@drawable/coins"
     android:initialLayout="@layout/widget_layout"
-    android:resizeMode="horizontal|vertical"
-    android:widgetCategory="home_screen">
+    android:minHeight="100dip"
+    android:minResizeHeight="100dip"
+    android:minResizeWidth="100dip"
+    android:minWidth="100dip"
+    android:previewImage="@drawable/coins"
+    android:resizeMode="vertical|horizontal"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="keyguard|home_screen">
 </appwidget-provider>

@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager;
+import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +28,7 @@ import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.models.MessageNotify;
+import com.sam_chordas.android.stockhawk.models.WidgetItem;
 import com.sam_chordas.android.stockhawk.rest.QuoteCursorAdapter;
 import com.sam_chordas.android.stockhawk.rest.RecyclerViewItemClickListener;
 import com.sam_chordas.android.stockhawk.rest.Utils;
@@ -64,16 +67,16 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    mContext = this;
+      super.onCreate(savedInstanceState);
+      mContext = this;
 
-    isConnected = new ConnectionDetector(mContext).isConnectingToInternet();
+      isConnected = new ConnectionDetector(mContext).isConnectingToInternet();
 
-    setContentView(R.layout.activity_my_stocks);
+      setContentView(R.layout.activity_my_stocks);
 
-    textViewError = (TextView)findViewById(R.id.tvStockError);
+      textViewError = (TextView) findViewById(R.id.tvStockError);
 
-    loadData(savedInstanceState);
+      loadData(savedInstanceState);
 
   }
 
@@ -85,7 +88,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mServiceIntent = new Intent(this, StockIntentService.class);
         if (savedInstanceState == null){
             // Run the initialize task service so that some stocks appear upon an empty database
-            mServiceIntent.putExtra("tag", "init");
+            mServiceIntent.putExtra(WebContants.STOCKS_TAG, WebContants.STOCKS_INIT);
             if (isConnected){
                 startService(mServiceIntent);
                 textViewError.setVisibility(View.GONE);
@@ -132,26 +135,59 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                             .content(R.string.content_test)
                             .inputType(InputType.TYPE_CLASS_TEXT)
                             .input(R.string.input_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
-                                @Override public void onInput(MaterialDialog dialog, CharSequence input) {
+                                @Override public void onInput(MaterialDialog dialog, final CharSequence input) {
                                     // On FAB click, receive user input. Make sure the stock doesn't already exist
                                     // in the DB and proceed accordingly
-                                    Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                                            new String[] { QuoteColumns.SYMBOL }, QuoteColumns.SYMBOL + "= ?",
-                                            new String[] { input.toString() }, null);
 
-                                    if (c.getCount() != 0) {
-                                        Toast toast =
-                                                Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
-                                                        Toast.LENGTH_LONG);
-                                        toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
-                                        toast.show();
-                                        return;
-                                    } else {
-                                        // Add the stock to DB
-                                        mServiceIntent.putExtra("tag", "add");
-                                        mServiceIntent.putExtra("symbol", input.toString());
-                                        startService(mServiceIntent);
-                                    }
+                                    Runnable runnable = new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            Cursor cursor = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+                                                    new String[] { QuoteColumns.SYMBOL }, QuoteColumns.SYMBOL + " LIKE ?",
+                                                    new String[] { input.toString().toUpperCase() }, null);
+
+                                            String toBeCompare = null;
+
+                                            cursor.moveToFirst();
+
+                                            if (cursor.getCount() != 0) {
+
+                                                cursor.moveToFirst();
+
+                                                while (!cursor.isAfterLast()){
+
+                                                    toBeCompare=cursor.getString(cursor.getColumnIndex(QuoteColumns.SYMBOL));
+                                                    cursor.moveToNext();
+                                                }
+
+
+                                                if (cursor.getCount() != 0  && toBeCompare.equalsIgnoreCase(input.toString())) {
+                                                    Toast toast =
+                                                            Toast.makeText(MyStocksActivity.this, getString(R.string.stocks_toast),
+                                                                    Toast.LENGTH_LONG);
+                                                    toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
+                                                    toast.show();
+                                                    return;
+                                                } else if (input.toString().equals(toBeCompare)){
+                                                    Toast toast =
+                                                            Toast.makeText(MyStocksActivity.this, getString(R.string.stocks_toast),
+                                                                    Toast.LENGTH_LONG);
+                                                    toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
+                                                    toast.show();
+
+                                                }
+
+                                            } else {
+                                                // Add the stock to DB
+                                                mServiceIntent.putExtra(WebContants.STOCKS_TAG, WebContants.STOCKS_ADD);
+                                                mServiceIntent.putExtra(WebContants.SYMBOL, input.toString());
+                                                startService(mServiceIntent);
+                                            }
+
+                                        }
+                                    };
+                                    runnable.run();
                                 }
                             })
                             .show();
@@ -170,7 +206,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         if (isConnected){
             long period = 3600L;
             long flex = 10L;
-            String periodicTag = "periodic";
+            String periodicTag = WebContants.STOCKS_PERIODIC;
 
             // create a periodic task to pull stocks once every hour after the app has been opened. This
             // is so Widget data stays up to date.

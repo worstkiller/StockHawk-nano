@@ -31,8 +31,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.sam_chordas.android.stockhawk.util.WebContants.EXTRA_DATA;
-
 /**
  * Created by OFFICE on 10/22/2016.
  */
@@ -83,9 +81,6 @@ public class StockHistory extends AppCompatActivity {
             textViewError.setVisibility(View.VISIBLE);
 
         }
-
-
-
     }
 
 
@@ -118,7 +113,7 @@ public class StockHistory extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
-                String rawResponse = s.replace(EXTRA_DATA,"");
+                String rawResponse = s.replace(getString(R.string.data_extra),"");
                 rawResponse = rawResponse.substring(0,rawResponse.length()-1);
                 String jsonConsumable = rawResponse.trim();
                 Gson gson = new Gson();
@@ -152,13 +147,11 @@ public class StockHistory extends AppCompatActivity {
             }
 
         }
-
         // add entries to dataset
-
         textViewMax.setText(String.valueOf(historyModel.getRanges().getClose().getMax()));
         textViewMin.setText(String.valueOf(historyModel.getRanges().getClose().getMin()));
 
-        LineDataSet dataSet = new LineDataSet(entries, "Stocks");
+        LineDataSet dataSet = new LineDataSet(entries, getString(R.string.stocks));
         LineData lineData = new LineData(dataSet);
         chart.setData(lineData);
         chart.invalidate();

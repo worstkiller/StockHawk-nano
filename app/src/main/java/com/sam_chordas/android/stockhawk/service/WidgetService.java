@@ -1,111 +1,126 @@
 package com.sam_chordas.android.stockhawk.service;
 
-import android.app.IntentService;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.CursorLoader;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Handler;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.Gravity;
+import android.os.Bundle;
 import android.widget.RemoteViews;
-import android.widget.Toast;
+import android.widget.RemoteViewsService;
 
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
+import com.sam_chordas.android.stockhawk.models.WidgetItem;
 import com.sam_chordas.android.stockhawk.ui.StocksWidget;
-import com.sam_chordas.android.stockhawk.util.WebContants;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by OFFICE on 10/30/2016.
  */
 
-public class WidgetService extends IntentService {
-    private static final String LOG = "de.vogella.android.widget.example";
+public class WidgetService extends RemoteViewsService {
 
     public WidgetService() {
-        super(LOG);
+        super();
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        return new WidgetDataProvider (this.getApplicationContext(), intent);
+    }
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
-                .getApplicationContext());
+    private class WidgetDataProvider  implements RemoteViewsFactory {
 
-        //get data from the database
+        private List<WidgetItem> mWidgetItems = new ArrayList<WidgetItem>();
+        private Context mContext;
+        private int mAppWidgetId;
 
-        Cursor cursor = null;
-        String change = getBaseContext().getResources().getString(R.string.screen_Reader_stock);
-        String symbol =  getBaseContext().getResources().getString(R.string.screen_Reader_change);;
+        public WidgetDataProvider (Context applicationContext, Intent intent) {
 
-        int position  = intent.getIntExtra(WebContants.EXTRA_COUNT,0);
+            mContext = applicationContext;
+            mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
 
-        cursor = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
-                new String[] { QuoteColumns.SYMBOL, QuoteColumns.CHANGE }, null,
-                null, null);
+        }
 
-        if (cursor.getCount() != 0) {
+        @Override
+        public void onCreate() {
 
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()){
+            //first clear all the values if present any
+            mWidgetItems.clear();
 
-                if (cursor.getPosition()==position){
-                    symbol = cursor.getString(cursor.getColumnIndex(QuoteColumns.SYMBOL));
-                    change = cursor.getString(cursor.getColumnIndex(QuoteColumns.CHANGE));
-                    break;
+            Cursor cursor = null;
+            String change = null;
+            String symbol =  null;
+            String price =  null;
+
+              cursor = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
+                    new String[] { QuoteColumns.SYMBOL, QuoteColumns.CHANGE, QuoteColumns.PERCENT_CHANGE }, null,
+                    null, null);
+
+            if (cursor.getCount() != 0) {
+
+                cursor.moveToFirst();
+
+                while (!cursor.isAfterLast()){
+                        symbol = cursor.getString(cursor.getColumnIndex(QuoteColumns.SYMBOL));
+                        change = cursor.getString(cursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE));
+                        price = cursor.getString(cursor.getColumnIndex(QuoteColumns.CHANGE));
+                        mWidgetItems.add(new WidgetItem(symbol,change,price));
+                        cursor.moveToNext();
                 }
-                cursor.moveToNext();
             }
+
+            cursor.close();
         }
 
-        cursor.close();
+        @Override
+        public void onDataSetChanged() {
 
-
-        ComponentName thisWidget = new ComponentName(getApplicationContext(),
-                StocksWidget.class);
-        int[] allWidgetIds2 = appWidgetManager.getAppWidgetIds(thisWidget);
-
-
-        for (int widgetId : allWidgetIds2) {
-            // create some random data
-
-            RemoteViews remoteViews = new RemoteViews(this
-                    .getApplicationContext().getPackageName(),
-                    R.layout.widget_layout);
-
-            // Set the text
-            remoteViews.setTextViewText(R.id.widgetChange,
-                    change);
-
-            // Set the text
-            remoteViews.setTextViewText(R.id.widgetStock,
-                    symbol);
-
-            // Register an onClickListener
-            Intent clickIntent = new Intent(this.getApplicationContext(),
-                    MyStocksActivity.class);
-
-            clickIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,
-                    allWidgetIds2);
-
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                    getApplicationContext(), 0, clickIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setOnClickPendingIntent(R.id.llWidget, pendingIntent);
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
-        stopSelf();
 
+        @Override
+        public void onDestroy() {
+            mWidgetItems.clear();
+        }
+
+        @Override
+        public int getCount() {
+            return mWidgetItems.size();
+        }
+
+        @Override
+        public RemoteViews getViewAt(int position) {
+
+            RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.list_item_quote);
+            rv.setTextViewText(R.id.stock_symbol, mWidgetItems.get(position).symbol);
+            rv.setTextViewText(R.id.bid_price, mWidgetItems.get(position).price);
+            rv.setTextViewText(R.id.change, mWidgetItems.get(position).change);
+            // Return the remote views object.
+            return rv;
+        }
+
+        @Override
+        public RemoteViews getLoadingView() {
+            return null;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 1;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
     }
 }

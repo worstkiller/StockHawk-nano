@@ -6,4 +6,7 @@
   <color name="material_green_700">#00C853</color>
   <color name="material_white_100">#f5f5f5</color>
   <color name="material_white">#37474f</color>
+
+  <color name="widget_back">#c8ffffff</color>
+  <color name="widget_back_black">#644b4b4d</color>
 </resources>

@@ -1,38 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llWidget"
-    android:orientation="horizontal"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dip"
-    android:background="@color/material_white" >
+    android:background="@drawable/widget_item_background"
+    android:layout_margin="@dimen/widget_margin" >
 
-    <TextView
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:id="@+id/widgetStock"
-        style="@android:style/TextAppearance.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_margin="4dip"
-        android:text="Stock Name " >
-    </TextView>
+        <ListView
+            android:id="@+id/widgetCollectionList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
 
-
-    <TextView
-        android:textColor="@color/material_blue_500"
-        android:layout_weight="1"
-        android:id="@+id/widgetChange"
-        style="@android:style/TextAppearance.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_margin="4dip"
-        android:text="Stock Name " >
-    </TextView>
-
-</LinearLayout>
+</FrameLayout>
