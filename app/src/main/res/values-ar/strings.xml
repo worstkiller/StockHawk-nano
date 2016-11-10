@@ -24,7 +24,6 @@
   <string name="screen_Reader_error_internet">الاتصال بشبكة الانترنت لم يتم العثور على</string>
   <string name="error_no_internet">الانترنت قد لا تعمل، تظهر البيانات المحلية بدلا</string>
   <string name="empty_view_text">الأسهم يتم تحميل</string>
-  <string name="fav_stock">Your Favourite Stocks</string>
   <string name="stocks_toast">يتم حفظ هذه الأسهم بالفعل!</string>
 
 </resources>
